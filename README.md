@@ -19,18 +19,71 @@ For use in the browser, use [browserify](https://github.com/substack/node-browse
 To use the module,
 
 ``` javascript
-var foo = require( 'compute-incrmsum' );
+var incrmsum = require( 'compute-incrmsum' );
 ```
 
-#### foo( arr )
+#### incrmsum( window )
 
-What does this function do?
+Returns an initialized method to compute a moving sum incrementally. `window` sets the window size, i.e., the number of values over which to compute a moving sum.
+
+``` javascript
+var msum = incrmsum( 3 );
+```
+
+#### msum( [value] )
+
+If provided a `value`, the method updates and returns the sum of the current window. If not provided a `value`, the method returns the current sum.
+
+``` javascript
+var sum;
+
+// Filling window...
+sum = msum( 2 );
+// sum is 2
+
+msum( 3 );
+// sum is 5
+
+msum( 2 );
+// sum is 7
+
+// Window starts sliding...
+msum( -2 );
+// sum is 3
+
+msum( 9 );
+// sum is 9
+
+sum = msum();
+// returns 9
+```
+
+
+## Notes
+
+1. 	If values have not yet been provided to `msum`, `msum` returns `null`.
+1. 	The first `W-1` returned sums will have less statistical support than subsequent moving sums, as `W` values are needed to fill the window buffer. Until the window is full, the value returned equals the [sum](https://github.com/compute-io/sum) of all values provided thus far.
+
+The use case for this module differs from the conventional [vector](https://github.com/compute-io/msum) implementation and the [stream](https://github.com/flow-io/) implementation. Namely, this module decouples the act of updating the moving sum from the act of consuming the moving sum.
+
 
 
 ## Examples
 
 ``` javascript
-var foo = require( 'compute-incrmsum' );
+var incrmsum = require( 'compute-incrmsum' );
+
+// Initialize a method to calculate the moving sum incrementally:
+var msum = incrmsum( 5 ),
+	sum;
+
+// Simulate some data...
+for ( var i = 0; i < 1000; i++ ) {
+	sum = msum( Math.random()*100 );
+	console.log( sum );
+}
+sum = msum();
+console.log( sum );
 ```
 
 To run the example code from the top-level application directory,
