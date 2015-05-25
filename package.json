@@ -1,6 +1,6 @@
 {
   "name": "compute-incrmsum",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Provides a method to compute a moving sum incrementally.",
   "author": {
     "name": "Athan Reines",
