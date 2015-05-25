@@ -29,6 +29,7 @@ describe( 'compute-incrmsum', function tests() {
 			'5',
 			-5,
 			0,
+			Math.PI,
 			true,
 			null,
 			undefined,
